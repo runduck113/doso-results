@@ -1,0 +1,793 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Giám sát kết quả xổ số</title>
+<!--
+  TRANG GIÁM SÁT — dành cho NGƯỜI VẬN HÀNH (bạn), không phải người dùng app.
+
+  Mở trang này khi GitHub Actions gửi mail báo đỏ. Nó đọc đúng hai file mà
+  `server/fetch-results.mjs` ghi ra:
+
+      api/v1/health.json                 tình trạng lượt cào gần nhất
+      api/v1/results/<YYYY-MM-DD>.json   kết quả từng ngày
+
+  Mọi đường dẫn fetch đều TƯƠNG ĐỐI để trang chạy được cả trên GitHub Pages
+  (dưới đường dẫn con /<repo>/) lẫn khi mở thẳng file trên máy.
+
+  Một file HTML duy nhất, không build, không thư viện ngoài, không font ngoài,
+  không theo dõi. Sửa file này không ảnh hưởng gì tới app.
+-->
+<style>
+/* ---------------------------------------------------------------------------
+   MÀU — mượn từ src/design/tokens.ts ("vé số giấy").
+   Nền mực đen ấm, thẻ mang màu GIẤY mã hoá miền, đỏ son là điểm nhấn DUY NHẤT
+   (ở đây dành riêng cho báo động). Đừng thêm màu mè chỗ khác.
+   --------------------------------------------------------------------------- */
+:root {
+  --bg: #E8E2D6;
+  --surface: #F6F2E9;
+  --surface-alt: #FFFFFF;
+  --line: #D3C9B8;
+  --text: #1A1410;
+  --dim: #6B6055;
+  --cinnabar: #D6321E;
+  --cinnabar-ink: #B02110;
+  --on-cinnabar: #FFF6F2;
+
+  --bac-paper: #C9EBDA;   --bac-ink: #0F3025;   --bac-edge: #A2D4BC;
+  --trung-paper: #F7DFA8; --trung-ink: #3D2A08; --trung-edge: #E0C07C;
+  --nam-paper: #F9CFD6;   --nam-ink: #411A21;   --nam-edge: #E3ABB5;
+  --viet-paper: #CCD3F0;  --viet-ink: #1B2049;  --viet-edge: #AAB4DC;
+
+  --ok-ink: #1D5B33;
+  --warn-ink: #6B4A05;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #12100E;
+    --surface: #1C1916;
+    --surface-alt: #262119;
+    --line: #332C24;
+    --text: #EDE6D8;
+    --dim: #9A9083;
+    --cinnabar: #E5432F;
+    --cinnabar-ink: #B02110;
+
+    --bac-paper: #BFE3D2;   --bac-ink: #123528;   --bac-edge: #9FCDB8;
+    --trung-paper: #F2D79A; --trung-ink: #3D2A08; --trung-edge: #DCBC77;
+    --nam-paper: #F4C4CC;   --nam-ink: #411A21;   --nam-edge: #DDA3AD;
+    --viet-paper: #C3CBEC;  --viet-ink: #1B2049;  --viet-edge: #A3ADD8;
+
+    --ok-ink: #7FCF9C;
+    --warn-ink: #E5C56A;
+  }
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  padding: 0 0 48px;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.55;
+}
+.wrap { max-width: 940px; margin: 0 auto; padding: 0 16px; }
+
+/* Dãy số: giả lập chữ in condensed trên vé giấy bằng font hệ thống. */
+.num {
+  font-family: "Roboto Condensed", "Arial Narrow", "Segoe UI", system-ui, sans-serif;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+}
+/* Nhãn in hoa nhỏ — CHỈ dùng cho nhãn phụ, không bao giờ cho cảnh báo. */
+.stamp {
+  font-family: "Roboto Condensed", "Arial Narrow", "Segoe UI", system-ui, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+header {
+  border-bottom: 1px solid var(--line);
+  background: var(--surface);
+  padding: 18px 0 16px;
+  margin-bottom: 22px;
+}
+header h1 { margin: 0; font-size: 20px; line-height: 1.3; }
+header p { margin: 4px 0 0; color: var(--dim); font-size: 14px; }
+
+h2 { font-size: 17px; margin: 30px 0 12px; }
+
+/* --- Bảng tình trạng tổng quát --------------------------------------------- */
+.overall {
+  border: 2px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface);
+  padding: 18px;
+}
+.overall.is-bad {
+  border-color: var(--cinnabar);
+  background: var(--surface-alt);
+}
+.overall .headline {
+  display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
+  margin: 0 0 6px; font-size: 22px; font-weight: 700; line-height: 1.25;
+}
+.overall.is-bad .headline { color: var(--cinnabar); }
+.overall .sub { margin: 0; color: var(--dim); font-size: 15px; }
+
+.facts {
+  display: grid; gap: 10px; margin: 16px 0 0; padding: 0;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+}
+.facts > div {
+  background: var(--surface-alt);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+.facts dt { margin: 0; color: var(--dim); font-size: 13px; }
+.facts dd { margin: 2px 0 0; font-size: 22px; }
+
+/* --- Thẻ đài --------------------------------------------------------------- */
+.region { margin-top: 22px; }
+.region > h3 {
+  margin: 0 0 10px; font-size: 15px;
+  display: flex; align-items: center; gap: 10px;
+}
+.swatch {
+  width: 14px; height: 14px; border-radius: 3px; flex: none;
+  border: 1px solid rgba(0,0,0,.25);
+}
+.cards { display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(228px, 1fr)); }
+
+.card {
+  border-radius: 12px;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--text);
+}
+/* Có kết quả → thẻ mang màu giấy của miền, đọc như một tờ vé thật. */
+.card.has-result { border: 1px solid var(--edge); background: var(--paper); color: var(--ink); }
+.card.has-result .card-name,
+.card.has-result .card-note { color: var(--ink); }
+.card.is-late { border: 2px solid var(--cinnabar); background: var(--surface-alt); }
+
+.card-name { font-weight: 700; font-size: 15px; margin: 0 0 2px; }
+.card-id { font-size: 11.5px; opacity: .72; margin: 0 0 8px; word-break: break-all; }
+.card-db { font-size: 15px; margin: 0; }
+.card-db strong { font-size: 26px; display: block; line-height: 1.15; }
+.card-note { margin: 6px 0 0; font-size: 13.5px; color: var(--dim); }
+
+.tag {
+  display: inline-block; border-radius: 999px; padding: 2px 9px;
+  font-size: 12px; font-weight: 700; margin-top: 8px;
+  border: 1px solid currentColor;
+}
+.tag.late { background: var(--cinnabar-ink); color: var(--on-cinnabar); border-color: transparent; }
+.tag.manual { background: var(--cinnabar-ink); color: var(--on-cinnabar); border-color: transparent; }
+.tag.waiting { color: var(--warn-ink); }
+.tag.ok { color: var(--ok-ink); }
+
+/* --- Hộp hướng dẫn --------------------------------------------------------- */
+.howto {
+  border: 2px solid var(--cinnabar);
+  border-radius: 14px;
+  background: var(--surface);
+  padding: 16px 18px;
+}
+.howto h2 { margin-top: 0; color: var(--cinnabar); }
+.overall h2 { margin-top: 0; }
+.howto ol { margin: 10px 0 0; padding-left: 22px; }
+.howto li { margin-bottom: 9px; }
+code {
+  font-family: ui-monospace, SFMono-Regular, "Cascadia Mono", Consolas, monospace;
+  background: var(--surface-alt);
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  padding: 1px 5px;
+  font-size: 13.5px;
+  word-break: break-all;
+}
+
+/* --- Chọn ngày ------------------------------------------------------------- */
+.datebar {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: 12px; padding: 12px 14px;
+}
+.datebar label { font-weight: 700; font-size: 15px; }
+input[type="date"], button {
+  font: inherit; font-size: 15px;
+  min-height: 44px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: var(--surface-alt);
+  color: var(--text);
+  padding: 6px 12px;
+}
+button { cursor: pointer; font-weight: 700; }
+button.primary { background: var(--cinnabar-ink); color: var(--on-cinnabar); border-color: transparent; }
+:focus-visible { outline: 3px solid var(--cinnabar); outline-offset: 2px; }
+
+.note { color: var(--dim); font-size: 14px; }
+.error {
+  border: 2px solid var(--cinnabar); border-radius: 12px;
+  background: var(--surface); padding: 14px 16px;
+}
+.error h2 { margin-top: 0; color: var(--cinnabar); }
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+footer { margin-top: 34px; color: var(--dim); font-size: 13px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <h1>Giám sát kết quả xổ số</h1>
+    <p>Trang dành cho người vận hành. Người dùng app không thấy trang này.</p>
+  </div>
+</header>
+
+<main class="wrap" id="main">
+  <p class="note" id="boot">Đang tải dữ liệu…</p>
+</main>
+
+<footer class="wrap">
+  <p>Đọc trực tiếp <code>api/v1/health.json</code> và <code>api/v1/results/&lt;ngày&gt;.json</code>.
+  Không thu thập dữ liệu, không gọi ra ngoài.</p>
+</footer>
+
+<script>
+"use strict";
+
+/* ===========================================================================
+   BẢNG TÊN ĐÀI — CHỈ ĐỂ HIỂN THỊ.
+   Đây KHÔNG phải nguồn sự thật về lịch quay: lịch nằm ở
+   src/lottery/registry.ts và trang này không bao giờ tự suy ra lịch.
+   Bảng này chỉ đổi mã đài ('mien-nam:tien-giang') thành chữ có dấu cho dễ đọc.
+   Thiếu tên nào thì tự chế lại từ mã, không lỗi.
+   =========================================================================== */
+var NAMES = {
+  "mien-bac": "Miền Bắc",
+  "mega-645": "Mega 6/45",
+  "power-655": "Power 6/55",
+  "mien-trung:da-nang": "Đà Nẵng",
+  "mien-trung:quang-ngai": "Quảng Ngãi",
+  "mien-trung:dak-nong": "Đắk Nông",
+  "mien-trung:khanh-hoa": "Khánh Hòa",
+  "mien-trung:kon-tum": "Kon Tum",
+  "mien-trung:hue": "Huế",
+  "mien-trung:phu-yen": "Phú Yên",
+  "mien-trung:dak-lak": "Đắk Lắk",
+  "mien-trung:quang-nam": "Quảng Nam",
+  "mien-trung:binh-dinh": "Bình Định",
+  "mien-trung:quang-binh": "Quảng Bình",
+  "mien-trung:quang-tri": "Quảng Trị",
+  "mien-trung:gia-lai": "Gia Lai",
+  "mien-trung:ninh-thuan": "Ninh Thuận",
+  "mien-nam:tien-giang": "Tiền Giang",
+  "mien-nam:kien-giang": "Kiên Giang",
+  "mien-nam:da-lat": "Đà Lạt",
+  "mien-nam:tp-ho-chi-minh": "TP. Hồ Chí Minh",
+  "mien-nam:dong-thap": "Đồng Tháp",
+  "mien-nam:ca-mau": "Cà Mau",
+  "mien-nam:ben-tre": "Bến Tre",
+  "mien-nam:vung-tau": "Vũng Tàu",
+  "mien-nam:bac-lieu": "Bạc Liêu",
+  "mien-nam:dong-nai": "Đồng Nai",
+  "mien-nam:can-tho": "Cần Thơ",
+  "mien-nam:soc-trang": "Sóc Trăng",
+  "mien-nam:tay-ninh": "Tây Ninh",
+  "mien-nam:an-giang": "An Giang",
+  "mien-nam:binh-thuan": "Bình Thuận",
+  "mien-nam:vinh-long": "Vĩnh Long",
+  "mien-nam:binh-duong": "Bình Dương",
+  "mien-nam:tra-vinh": "Trà Vinh",
+  "mien-nam:long-an": "Long An",
+  "mien-nam:binh-phuoc": "Bình Phước",
+  "mien-nam:hau-giang": "Hậu Giang"
+};
+
+/* Giờ (VN) mà kết quả CHẮC CHẮN phải có.
+   ⚠️ Phải khớp với DEADLINE trong server/check-health.mjs — sửa bên đó thì
+   sửa cả bên này, nếu không trang báo một đằng, mail cảnh báo báo một nẻo. */
+var DEADLINE = { "mien-nam": 17, "mien-trung": 18, "mien-bac": 19, "vietlott": 19 };
+
+var REGION_ORDER = ["mien-nam", "mien-trung", "mien-bac", "vietlott"];
+var REGION_NAMES = {
+  "mien-nam": "Miền Nam",
+  "mien-trung": "Miền Trung",
+  "mien-bac": "Miền Bắc",
+  "vietlott": "Vietlott"
+};
+var REGION_VARS = {
+  "mien-nam": ["--nam-paper", "--nam-ink", "--nam-edge"],
+  "mien-trung": ["--trung-paper", "--trung-ink", "--trung-edge"],
+  "mien-bac": ["--bac-paper", "--bac-ink", "--bac-edge"],
+  "vietlott": ["--viet-paper", "--viet-ink", "--viet-edge"]
+};
+var WEEKDAYS = ["Chủ Nhật","Thứ Hai","Thứ Ba","Thứ Tư","Thứ Năm","Thứ Sáu","Thứ Bảy"];
+
+/* --- Tiện ích nhỏ --------------------------------------------------------- */
+
+function regionOf(typeId) {
+  if (typeId.indexOf("mien-bac") === 0) return "mien-bac";
+  if (typeId.indexOf("mien-trung") === 0) return "mien-trung";
+  if (typeId.indexOf("mien-nam") === 0) return "mien-nam";
+  return "vietlott";
+}
+
+function nameOf(typeId) {
+  if (NAMES[typeId]) return NAMES[typeId];
+  // Không có trong bảng (đài mới?) → chế lại từ mã, thà xấu còn hơn trống.
+  var tail = typeId.indexOf(":") >= 0 ? typeId.slice(typeId.indexOf(":") + 1) : typeId;
+  return tail.replace(/-/g, " ").replace(/\b\w/g, function (c) { return c.toUpperCase(); });
+}
+
+/** Ngày hôm nay theo giờ Việt Nam (UTC+7) — máy người xem có thể ở múi khác. */
+function todayVN() {
+  return new Date(Date.now() + 7 * 3600 * 1000).toISOString().slice(0, 10);
+}
+/** Giờ hiện tại theo giờ Việt Nam, 0–23. */
+function hourVN() {
+  return new Date(Date.now() + 7 * 3600 * 1000).getUTCHours();
+}
+function weekdayVN(date) {
+  var d = new Date(date + "T00:00:00Z");
+  return isNaN(d.getTime()) ? null : d.getUTCDay();
+}
+
+function el(tag, cls, text) {
+  var n = document.createElement(tag);
+  if (cls) n.className = cls;
+  if (text !== undefined && text !== null) n.textContent = String(text);
+  return n;
+}
+
+/** "cách đây N phút" — luôn tính ở máy người xem, không tin giờ trong file. */
+function agoText(iso) {
+  var t = Date.parse(iso);
+  if (isNaN(t)) return null;
+  var mins = Math.round((Date.now() - t) / 60000);
+  if (mins < 0) return "vừa xong";           // lệch đồng hồ, đừng ghi số âm
+  if (mins < 1) return "vừa xong";
+  if (mins < 60) return "cách đây " + mins + " phút";
+  var hrs = Math.floor(mins / 60);
+  if (hrs < 24) return "cách đây " + hrs + " tiếng " + (mins % 60) + " phút";
+  var days = Math.floor(hrs / 24);
+  return "cách đây " + days + " ngày " + (hrs % 24) + " tiếng";
+}
+function minutesSince(iso) {
+  var t = Date.parse(iso);
+  return isNaN(t) ? null : (Date.now() - t) / 60000;
+}
+
+function dateLabel(date) {
+  var wd = weekdayVN(date);
+  var parts = date.split("-");
+  var dmy = parts[2] + "/" + parts[1] + "/" + parts[0];
+  return wd === null ? date : WEEKDAYS[wd] + ", " + dmy;
+}
+
+/**
+ * Tải JSON. KHÔNG bao giờ ném lỗi ra ngoài — trả về
+ * { ok:true, data } hoặc { ok:false, why:"<lý do bằng tiếng Việt>" }.
+ * Phân biệt rõ: mất mạng / thiếu file / file hỏng — ba lỗi này cần ba cách sửa
+ * khác nhau nên không được gộp thành một câu "lỗi".
+ */
+function loadJSON(path) {
+  return fetch(path, { cache: "no-store" }).then(
+    function (res) {
+      if (res.status === 404) {
+        return { ok: false, why: "Không tìm thấy file <code>" + path + "</code> — đường ống chưa từng chạy cho ngày này.", missing: true };
+      }
+      if (!res.ok) {
+        return { ok: false, why: "Máy chủ trả lỗi " + res.status + " khi lấy <code>" + path + "</code>." };
+      }
+      return res.text().then(function (txt) {
+        try {
+          return { ok: true, data: JSON.parse(txt) };
+        } catch (e) {
+          return { ok: false, why: "File <code>" + path + "</code> có nội dung hỏng, không đọc được (JSON sai cú pháp). Nhiều khả năng có người sửa tay mà thiếu dấu phẩy hoặc ngoặc." };
+        }
+      });
+    },
+    function () {
+      // fetch() chỉ reject khi mạng hỏng, CORS chặn, hoặc mở bằng file://
+      return { ok: false, why: "Không tải được <code>" + path + "</code>. Kiểm tra kết nối mạng. Nếu bạn đang mở file HTML trực tiếp từ ổ đĩa thì trình duyệt chặn đọc file cạnh bên — chạy <code>npx serve public</code> rồi mở qua địa chỉ localhost." };
+    }
+  );
+}
+
+/* --- Rút số đặc biệt ------------------------------------------------------ */
+
+/**
+ * Lấy con số để người vận hành liếc mắt đối chiếu với trang xổ số thật.
+ * Trả null nếu dữ liệu không đúng dạng mong đợi — KHÔNG đoán, không bịa.
+ */
+function jackpotOf(r) {
+  if (!r || typeof r !== "object" || !r.draw) return null;
+  if (r.kind === "vietlott") {
+    var ns = r.draw.numbers;
+    if (!Array.isArray(ns) || ns.length === 0) return null;
+    var s = ns.join(" · ");
+    if (typeof r.draw.powerNumber === "number") s += "  +" + r.draw.powerNumber;
+    return { label: "Bộ số", value: s };
+  }
+  var db = r.draw["dac-biet"];
+  if (!Array.isArray(db) || db.length === 0) return null;
+  return { label: "Giải đặc biệt", value: db.join(" / ") };
+}
+
+/* --- Dựng trang ----------------------------------------------------------- */
+
+var main = document.getElementById("main");
+var state = { health: null, healthErr: null, date: null };
+
+function render(day, dayErr) {
+  main.textContent = "";
+
+  renderOverall(day, dayErr);
+  renderDateBar();
+
+  if (dayErr) {
+    var box = el("section", "error");
+    box.appendChild(el("h2", null, "Không đọc được kết quả ngày " + dateLabel(state.date)));
+    var p = el("p");
+    p.innerHTML = dayErr.why;
+    box.appendChild(p);
+    if (dayErr.missing) {
+      box.appendChild(el("p", "note",
+        "Nếu đây là ngày trong quá khứ mà đường ống chưa từng chạy thì không có gì để xem. " +
+        "Nếu là hôm nay thì lượt cào chưa chạy xong — xem lại GitHub Actions."));
+    }
+    main.appendChild(box);
+    return;
+  }
+
+  renderStations(day);
+  renderHowTo(day);
+}
+
+function renderOverall(day, dayErr) {
+  var h = state.health;
+  var sec = el("section", "overall");
+  sec.setAttribute("aria-labelledby", "tt-head");
+
+  var problems = [];   // câu mô tả sự cố, dùng cho tiêu đề lớn
+  var stale = null;
+
+  if (!h) {
+    problems.push("Không đọc được file tình trạng");
+  } else {
+    var mins = minutesSince(h.checkedAt);
+    if (mins !== null && mins > 6 * 60) {
+      stale = true;
+      problems.push("Đã " + Math.floor(mins / 60) + " tiếng chưa cập nhật");
+    }
+  }
+
+  var late = day ? lateList(day) : [];
+  if (late.length) problems.push(late.length + " đài quá giờ mà vẫn trống");
+
+  var bad = problems.length > 0;
+  if (bad) sec.className = "overall is-bad";
+
+  var head = el("p", "headline");
+  head.id = "tt-head";
+  head.textContent = bad
+    ? "⚠ Có vấn đề: " + problems.join(" · ")
+    : "✓ Đường ống đang chạy bình thường";
+  sec.appendChild(head);
+
+  var sub = el("p", "sub");
+  if (bad) {
+    sub.textContent = "Đọc phần “Cần làm gì bây giờ” ở cuối trang.";
+  } else {
+    sub.textContent = "Nguồn kết quả lấy được đầy đủ, không có đài nào quá giờ.";
+  }
+  sec.appendChild(sub);
+
+  var facts = el("dl", "facts");
+  function fact(label, value, isNum) {
+    var box = el("div");
+    box.appendChild(el("dt", null, label));
+    var dd = el("dd", isNum ? "num" : null, value);
+    box.appendChild(dd);
+    facts.appendChild(box);
+  }
+
+  if (h) {
+    fact("Lấy được / cần lấy", (h.got != null ? h.got : "?") + " / " + (h.expected != null ? h.expected : "?"), true);
+    fact("Nguồn kết quả", h.ok === true ? "Đang OK" : "Đang thiếu đài");
+    var ago = agoText(h.checkedAt);
+    fact("Cập nhật gần nhất", ago || "không rõ");
+    fact("Ngày đường ống chạy", h.date ? dateLabel(h.date) : "không rõ");
+  } else {
+    fact("Lấy được / cần lấy", "không rõ");
+    fact("Nguồn kết quả", "không rõ");
+  }
+  sec.appendChild(facts);
+
+  if (state.healthErr) {
+    var e = el("p", "note");
+    e.innerHTML = "Về file tình trạng: " + state.healthErr.why;
+    sec.appendChild(e);
+  }
+
+  if (stale) {
+    sec.appendChild(el("p", null,
+      "Quá 6 tiếng không cập nhật là BẤT THƯỜNG — đường ống chạy vài lượt mỗi chiều. " +
+      "Nhiều khả năng GitHub Actions không chạy (hết hạn mức, workflow bị tắt, hoặc kho lưu trữ đang ngủ đông). " +
+      "Vào tab Actions của kho mã xem lượt chạy gần nhất."));
+  }
+
+  if (dayErr) {
+    // đã báo chi tiết ở dưới, ở đây chỉ nói ngắn
+    sec.appendChild(el("p", "note", "Chưa đọc được file kết quả của ngày đang xem."));
+  }
+
+  main.appendChild(sec);
+}
+
+function renderDateBar() {
+  var form = el("form", "datebar");
+  form.style.marginTop = "18px";
+
+  var label = el("label", null, "Xem ngày khác:");
+  label.setAttribute("for", "datepick");
+  var input = el("input");
+  input.type = "date";
+  input.id = "datepick";
+  input.value = state.date;
+  input.max = todayVN();
+
+  var go = el("button", "primary", "Xem");
+  go.type = "submit";
+
+  var today = el("button", null, "Hôm nay");
+  today.type = "button";
+  today.addEventListener("click", function () {
+    input.value = todayVN();
+    loadDay(input.value);
+  });
+
+  form.addEventListener("submit", function (ev) {
+    ev.preventDefault();
+    if (input.value) loadDay(input.value);
+  });
+
+  form.appendChild(label);
+  form.appendChild(input);
+  form.appendChild(go);
+  form.appendChild(today);
+  main.appendChild(form);
+}
+
+/**
+ * Danh sách đài CẦN có kết quả cho ngày đang xem.
+ *
+ * Chỉ health.json mới biết "cần lấy bao nhiêu đài", mà nó chỉ nói về ĐÚNG một
+ * ngày (`health.date`). Với ngày khác, ta chỉ biết những gì đã có trong file
+ * kết quả — nên không suy diễn thêm, chỉ hiện cái mình chắc chắn.
+ */
+function expectedIds(day) {
+  var have = day && day.results ? Object.keys(day.results) : [];
+  var h = state.health;
+  if (h && h.date === state.date && Array.isArray(h.missing)) {
+    var set = {};
+    have.concat(h.missing).forEach(function (id) { set[id] = true; });
+    return { ids: Object.keys(set), complete: true };
+  }
+  return { ids: have, complete: false };
+}
+
+/** Đài thiếu mà ĐÃ QUÁ GIỜ chắc chắn phải có — đây mới là báo động thật. */
+function lateList(day) {
+  var exp = expectedIds(day);
+  var results = (day && day.results) || {};
+  var isPast = state.date < todayVN();
+  var hour = hourVN();
+  return exp.ids.filter(function (id) {
+    if (results[id]) return false;
+    if (isPast) return true;                       // ngày đã qua thì mọi đài đều quá giờ
+    if (state.date > todayVN()) return false;      // ngày tương lai: chưa quay
+    return hour >= DEADLINE[regionOf(id)];
+  });
+}
+
+function statusOf(id, day) {
+  var results = (day && day.results) || {};
+  var r = results[id];
+  if (r) return { kind: "ok", result: r };
+  if (state.date > todayVN()) return { kind: "waiting", why: "Ngày này chưa tới." };
+  if (state.date < todayVN()) return { kind: "late" };
+  var hour = hourVN();
+  var dl = DEADLINE[regionOf(id)];
+  if (hour < dl) return { kind: "waiting", why: "Chưa tới giờ quay (đợi sau " + dl + "h)." };
+  return { kind: "late" };
+}
+
+function renderStations(day) {
+  var exp = expectedIds(day);
+
+  var h2 = el("h2", null, "Bảng kết quả " + dateLabel(state.date));
+  main.appendChild(h2);
+
+  if (!exp.complete) {
+    main.appendChild(el("p", "note",
+      "Ngày này khác với ngày đường ống vừa chạy, nên trang chỉ biết những đài ĐÃ có kết quả " +
+      "trong file — không biết hôm đó lẽ ra phải có bao nhiêu đài. Muốn xem đủ, đối chiếu với " +
+      "lịch quay trong src/lottery/registry.ts."));
+  }
+
+  if (exp.ids.length === 0) {
+    main.appendChild(el("p", "note", "File kết quả ngày này rỗng — chưa có đài nào."));
+    return;
+  }
+
+  if (day && day.updatedAt) {
+    main.appendChild(el("p", "note", "File kết quả ghi lần cuối: " + (agoText(day.updatedAt) || day.updatedAt) + "."));
+  }
+
+  REGION_ORDER.forEach(function (region) {
+    var ids = exp.ids.filter(function (id) { return regionOf(id) === region; })
+      .sort(function (a, b) { return nameOf(a).localeCompare(nameOf(b), "vi"); });
+    if (ids.length === 0) return;
+
+    var sec = el("section", "region");
+    var vars = REGION_VARS[region];
+    var h3 = el("h3");
+    var sw = el("span", "swatch");
+    sw.style.background = "var(" + vars[0] + ")";
+    sw.setAttribute("aria-hidden", "true");
+    h3.appendChild(sw);
+    h3.appendChild(document.createTextNode(REGION_NAMES[region] + " (" + ids.length + " đài)"));
+    sec.appendChild(h3);
+
+    var grid = el("div", "cards");
+    ids.forEach(function (id) { grid.appendChild(stationCard(id, day, vars)); });
+    sec.appendChild(grid);
+    main.appendChild(sec);
+  });
+}
+
+function stationCard(id, day, vars) {
+  var st = statusOf(id, day);
+  var card = el("article", "card");
+  card.style.setProperty("--paper", "var(" + vars[0] + ")");
+  card.style.setProperty("--ink", "var(" + vars[1] + ")");
+  card.style.setProperty("--edge", "var(" + vars[2] + ")");
+
+  card.appendChild(el("p", "card-name", nameOf(id)));
+  card.appendChild(el("p", "card-id num", id));
+
+  if (st.kind === "ok") {
+    card.className = "card has-result";
+    var j = jackpotOf(st.result);
+    if (j) {
+      var p = el("p", "card-db");
+      p.appendChild(document.createTextNode(j.label + ": "));
+      p.appendChild(el("strong", "num", j.value));
+      card.appendChild(p);
+    } else {
+      card.appendChild(el("p", "card-note",
+        "Có bản ghi nhưng không đọc được số đặc biệt — dữ liệu sai dạng, cần kiểm tra file."));
+    }
+    if (st.result.source) card.appendChild(el("p", "card-note", "Nguồn: " + st.result.source));
+    if (st.result.manual === true) {
+      card.appendChild(el("span", "tag manual", "✎ ĐÃ SỬA TAY"));
+      card.appendChild(el("p", "card-note",
+        "Số này do người nhập, không phải máy cào. Lượt cào sau sẽ không đè lên."));
+    } else {
+      card.appendChild(el("span", "tag ok", "Có kết quả"));
+    }
+  } else if (st.kind === "waiting") {
+    card.appendChild(el("span", "tag waiting", "Chưa tới giờ quay"));
+    card.appendChild(el("p", "card-note", st.why + " Trống lúc này là bình thường."));
+  } else {
+    card.className = "card is-late";
+    card.appendChild(el("span", "tag late", "⚠ QUÁ GIỜ, VẪN TRỐNG"));
+    card.appendChild(el("p", "card-note", "Đài này lẽ ra đã phải có kết quả. Đây là sự cố cần xử lý."));
+  }
+  return card;
+}
+
+function renderHowTo(day) {
+  var late = lateList(day);
+  var h2 = el("h2", null, late.length ? "Cần làm gì bây giờ" : "Khi có đài thiếu thì làm gì");
+  var sec = el("section", late.length ? "howto" : "overall");
+  sec.appendChild(h2);
+
+  if (late.length) {
+    sec.appendChild(el("p", null,
+      "Đang thiếu " + late.length + " đài quá giờ: " +
+      late.map(nameOf).join(", ") + "."));
+    sec.appendChild(el("p", null,
+      "Nghĩa là gì: gần như chắc chắn trang nguồn đã ĐỔI GIAO DIỆN hoặc CHẶN máy chủ, " +
+      "nên bộ cào đọc về trang rỗng. Không phải app hỏng."));
+  } else {
+    sec.appendChild(el("p", "note",
+      "Hiện không có đài nào quá giờ. Giữ các bước dưới đây để dùng khi cần."));
+  }
+
+  var ol = el("ol");
+  function step(html) { var li = el("li"); li.innerHTML = html; ol.appendChild(li); }
+  step("Xem lại bảng phía trên: đài nào viền đỏ là đài đang hỏng.");
+  step("Chạy tay để xem nguồn trả về gì: <code>npm run verify:source</code>");
+  step("Nếu nguồn đã đổi giao diện thì sửa bộ đọc: <code>src/results/providers/webScrapeProvider.ts</code>");
+  step("Cần gấp trong hôm nay: sửa tay file <code>public/api/v1/results/" + state.date + ".json</code>, " +
+       "thêm <code>\"manual\": true</code> vào bản ghi của đài đó để lượt cào sau KHÔNG đè lên. " +
+       "Đài nào sửa tay sẽ hiện nhãn “ĐÃ SỬA TAY” ở bảng trên.");
+  step("Xong thì chạy lại <code>node server/fetch-results.mjs</code> rồi tải lại trang này.");
+  sec.appendChild(ol);
+
+  sec.appendChild(el("p", null,
+    "Yên tâm: khi thiếu kết quả, app KHÔNG báo trúng bừa — người dùng chỉ thấy “chưa có kết quả”. " +
+    "Nên đây là việc gấp, nhưng không gây hại cho ai."));
+
+  main.appendChild(sec);
+}
+
+/* --- Khởi động ------------------------------------------------------------ */
+
+function loadDay(date) {
+  state.date = date;
+  main.textContent = "";
+  main.appendChild(el("p", "note", "Đang tải kết quả ngày " + dateLabel(date) + "…"));
+  loadJSON("api/v1/results/" + date + ".json").then(function (res) {
+    // File có thể tồn tại nhưng thiếu trường `results` — coi như rỗng, đừng vỡ.
+    var day = res.ok ? res.data : null;
+    if (day && (typeof day !== "object" || day.results === undefined)) {
+      day = { date: date, results: {}, updatedAt: day.updatedAt };
+    }
+    render(day, res.ok ? null : res);
+  });
+}
+
+function start() {
+  loadJSON("api/v1/health.json").then(function (res) {
+    if (res.ok && res.data && typeof res.data === "object") {
+      state.health = res.data;
+    } else {
+      state.healthErr = res.ok
+        ? { why: "File <code>api/v1/health.json</code> không đúng định dạng mong đợi." }
+        : res;
+    }
+    // Mặc định xem ngày mà đường ống vừa chạy; không có thì lấy hôm nay.
+    var d = (state.health && /^\d{4}-\d{2}-\d{2}$/.test(state.health.date || ""))
+      ? state.health.date : todayVN();
+    loadDay(d);
+  });
+}
+
+// Lỗi lập trình bất ngờ cũng phải ra tiếng Việt, không được để trang trắng.
+window.addEventListener("error", function (ev) {
+  if (main.childElementCount > 1) return;   // đã vẽ được gì đó rồi thì thôi
+  main.textContent = "";
+  var box = el("section", "error");
+  box.appendChild(el("h2", null, "Trang giám sát gặp lỗi"));
+  box.appendChild(el("p", null,
+    "Trang này bị lỗi khi hiển thị, nhưng dữ liệu kết quả vẫn có thể vẫn bình thường. " +
+    "Mở thẳng file api/v1/health.json để xem tình trạng."));
+  box.appendChild(el("p", "note", "Chi tiết kỹ thuật: " + (ev.message || "không rõ")));
+  main.appendChild(box);
+});
+
+start();
+</script>
+</body>
+</html>

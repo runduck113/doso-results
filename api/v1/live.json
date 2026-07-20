@@ -1,0 +1,217 @@
+{
+  "note": "CHỈ ĐỂ XEM — KHÔNG PHẢI KẾT QUẢ CHÍNH THỨC. File này chụp một kỳ ĐANG QUAY từ MỘT nguồn, chưa đối chiếu chéo, có thể thiếu giải. Không dùng để dò vé hay để báo trúng/trật. Kết quả chính thức nằm ở api/v1/results/<ngày>.json do server/fetch-results.mjs ghi (hai nguồn phải khớp nhau).",
+  "authoritative": false,
+  "official": "api/v1/results/2026-07-20.json",
+  "date": "2026-07-20",
+  "updatedAt": "2026-07-20T10:22:26.371Z",
+  "complete": false,
+  "stations": {
+    "mien-trung:hue": {
+      "name": "Huế",
+      "region": "mien-trung",
+      "state": "partial",
+      "source": "xosodaiphat.com",
+      "updatedAt": "2026-07-20T10:22:26.368Z",
+      "got": 12,
+      "expected": 18,
+      "lots": {
+        "tu": [
+          "93853",
+          "59479",
+          "82490",
+          "87766",
+          "66631",
+          "37210"
+        ],
+        "nam": [
+          "9889"
+        ],
+        "sau": [
+          "2909",
+          "5178",
+          "9198"
+        ],
+        "bay": [
+          "151"
+        ],
+        "tam": [
+          "68"
+        ]
+      },
+      "tiers": [
+        {
+          "id": "tam",
+          "name": "Giải tám",
+          "expected": 1,
+          "got": 1,
+          "complete": true
+        },
+        {
+          "id": "bay",
+          "name": "Giải bảy",
+          "expected": 1,
+          "got": 1,
+          "complete": true
+        },
+        {
+          "id": "sau",
+          "name": "Giải sáu",
+          "expected": 3,
+          "got": 3,
+          "complete": true
+        },
+        {
+          "id": "nam",
+          "name": "Giải năm",
+          "expected": 1,
+          "got": 1,
+          "complete": true
+        },
+        {
+          "id": "tu",
+          "name": "Giải tư",
+          "expected": 7,
+          "got": 6,
+          "complete": false
+        },
+        {
+          "id": "ba",
+          "name": "Giải ba",
+          "expected": 2,
+          "got": 0,
+          "complete": false
+        },
+        {
+          "id": "nhi",
+          "name": "Giải nhì",
+          "expected": 1,
+          "got": 0,
+          "complete": false
+        },
+        {
+          "id": "nhat",
+          "name": "Giải nhất",
+          "expected": 1,
+          "got": 0,
+          "complete": false
+        },
+        {
+          "id": "dac-biet",
+          "name": "Đặc biệt",
+          "expected": 1,
+          "got": 0,
+          "complete": false
+        }
+      ],
+      "pending": [
+        "dac-biet",
+        "nhat",
+        "nhi",
+        "ba",
+        "tu"
+      ]
+    },
+    "mien-trung:phu-yen": {
+      "name": "Phú Yên",
+      "region": "mien-trung",
+      "state": "partial",
+      "source": "xosodaiphat.com",
+      "updatedAt": "2026-07-20T10:22:26.370Z",
+      "got": 9,
+      "expected": 18,
+      "lots": {
+        "tu": [
+          "16750",
+          "91387",
+          "23795"
+        ],
+        "nam": [
+          "5116"
+        ],
+        "sau": [
+          "2436",
+          "0682",
+          "7098"
+        ],
+        "bay": [
+          "504"
+        ],
+        "tam": [
+          "88"
+        ]
+      },
+      "tiers": [
+        {
+          "id": "tam",
+          "name": "Giải tám",
+          "expected": 1,
+          "got": 1,
+          "complete": true
+        },
+        {
+          "id": "bay",
+          "name": "Giải bảy",
+          "expected": 1,
+          "got": 1,
+          "complete": true
+        },
+        {
+          "id": "sau",
+          "name": "Giải sáu",
+          "expected": 3,
+          "got": 3,
+          "complete": true
+        },
+        {
+          "id": "nam",
+          "name": "Giải năm",
+          "expected": 1,
+          "got": 1,
+          "complete": true
+        },
+        {
+          "id": "tu",
+          "name": "Giải tư",
+          "expected": 7,
+          "got": 3,
+          "complete": false
+        },
+        {
+          "id": "ba",
+          "name": "Giải ba",
+          "expected": 2,
+          "got": 0,
+          "complete": false
+        },
+        {
+          "id": "nhi",
+          "name": "Giải nhì",
+          "expected": 1,
+          "got": 0,
+          "complete": false
+        },
+        {
+          "id": "nhat",
+          "name": "Giải nhất",
+          "expected": 1,
+          "got": 0,
+          "complete": false
+        },
+        {
+          "id": "dac-biet",
+          "name": "Đặc biệt",
+          "expected": 1,
+          "got": 0,
+          "complete": false
+        }
+      ],
+      "pending": [
+        "dac-biet",
+        "nhat",
+        "nhi",
+        "ba",
+        "tu"
+      ]
+    }
+  }
+}

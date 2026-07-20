@@ -237,7 +237,8 @@ footer { margin-top: 34px; color: var(--dim); font-size: 13px; }
 <header>
   <div class="wrap">
     <h1>Giám sát kết quả xổ số</h1>
-    <p>Trang dành cho người vận hành. Người dùng app không thấy trang này.</p>
+    <p>Trang dành cho người vận hành. Người dùng app không thấy trang này.
+    Đang giữa buổi quay? <a href="live.html">Xem trực tiếp</a> (chỉ để xem, không chính thức).</p>
   </div>
 </header>
 
@@ -301,10 +302,20 @@ var NAMES = {
   "mien-nam:hau-giang": "Hậu Giang"
 };
 
-/* Giờ (VN) mà kết quả CHẮC CHẮN phải có.
-   ⚠️ Phải khớp với DEADLINE trong server/check-health.mjs — sửa bên đó thì
-   sửa cả bên này, nếu không trang báo một đằng, mail cảnh báo báo một nẻo. */
-var DEADLINE = { "mien-nam": 17, "mien-trung": 18, "mien-bac": 19, "vietlott": 19 };
+/* Phút trong ngày (giờ VN) mà kết quả CHẮC CHẮN phải có.
+
+   ⚠️ BẢN SAO BẮT BUỘC — đây là trang tĩnh chạy trong trình duyệt, không import
+   được TypeScript, nên không tự lấy được từ registry như check-health.mjs.
+
+   NGUỒN GỐC: FETCH_AFTER trong src/lottery/registry.ts, cộng 60 phút ân hạn.
+     mien-nam   16:40 + 60 = 17:40 = 1060
+     mien-trung 17:40 + 60 = 18:40 = 1120
+     mien-bac   18:40 + 60 = 19:40 = 1180
+     vietlott   18:35 + 60 = 19:35 = 1175
+
+   Sửa FETCH_AFTER thì PHẢI sửa cả bảng này, nếu không trang báo một đằng còn
+   mail cảnh báo báo một nẻo. (check-health.mjs tự suy ra, không cần sửa tay.) */
+var DEADLINE = { "mien-nam": 1060, "mien-trung": 1120, "mien-bac": 1180, "vietlott": 1175 };
 
 var REGION_ORDER = ["mien-nam", "mien-trung", "mien-bac", "vietlott"];
 var REGION_NAMES = {
@@ -323,6 +334,10 @@ var WEEKDAYS = ["Chủ Nhật","Thứ Hai","Thứ Ba","Thứ Tư","Thứ Năm","
 
 /* --- Tiện ích nhỏ --------------------------------------------------------- */
 
+/* Bản sao rút gọn của regionOf trong src/checkRunner.ts. Bên đó tra registry,
+   ở đây không import được nên đoán theo đầu mã đài — chấp nhận được vì mã đài
+   luôn có dạng "<miền>:<tỉnh>", và trang này chỉ dùng để TÔ MÀU / xếp nhóm,
+   không quyết định trúng trật. Đổi quy ước đặt mã đài thì sửa cả đây. */
 function regionOf(typeId) {
   if (typeId.indexOf("mien-bac") === 0) return "mien-bac";
   if (typeId.indexOf("mien-trung") === 0) return "mien-trung";
@@ -344,6 +359,16 @@ function todayVN() {
 /** Giờ hiện tại theo giờ Việt Nam, 0–23. */
 function hourVN() {
   return new Date(Date.now() + 7 * 3600 * 1000).getUTCHours();
+}
+/** Phút trong ngày theo giờ Việt Nam, 0–1439 — đơn vị của bảng DEADLINE. */
+function minutesVN() {
+  var d = new Date(Date.now() + 7 * 3600 * 1000);
+  return d.getUTCHours() * 60 + d.getUTCMinutes();
+}
+/** 1060 → "17h40", để hiện cho người đọc thay vì con số phút trần trụi. */
+function hhmm(minutes) {
+  var h = Math.floor(minutes / 60), m = minutes % 60;
+  return h + "h" + (m < 10 ? "0" : "") + m;
 }
 function weekdayVN(date) {
   var d = new Date(date + "T00:00:00Z");
@@ -600,12 +625,12 @@ function lateList(day) {
   var exp = expectedIds(day);
   var results = (day && day.results) || {};
   var isPast = state.date < todayVN();
-  var hour = hourVN();
+  var now = minutesVN();
   return exp.ids.filter(function (id) {
     if (results[id]) return false;
     if (isPast) return true;                       // ngày đã qua thì mọi đài đều quá giờ
     if (state.date > todayVN()) return false;      // ngày tương lai: chưa quay
-    return hour >= DEADLINE[regionOf(id)];
+    return now >= DEADLINE[regionOf(id)];
   });
 }
 
@@ -615,9 +640,9 @@ function statusOf(id, day) {
   if (r) return { kind: "ok", result: r };
   if (state.date > todayVN()) return { kind: "waiting", why: "Ngày này chưa tới." };
   if (state.date < todayVN()) return { kind: "late" };
-  var hour = hourVN();
+  var now = minutesVN();
   var dl = DEADLINE[regionOf(id)];
-  if (hour < dl) return { kind: "waiting", why: "Chưa tới giờ quay (đợi sau " + dl + "h)." };
+  if (now < dl) return { kind: "waiting", why: "Chưa tới giờ quay (đợi sau " + hhmm(dl) + ")." };
   return { kind: "late" };
 }
 
@@ -729,10 +754,16 @@ function renderHowTo(day) {
   step("Xem lại bảng phía trên: đài nào viền đỏ là đài đang hỏng.");
   step("Chạy tay để xem nguồn trả về gì: <code>npm run verify:source</code>");
   step("Nếu nguồn đã đổi giao diện thì sửa bộ đọc: <code>src/results/providers/webScrapeProvider.ts</code>");
-  step("Cần gấp trong hôm nay: sửa tay file <code>public/api/v1/results/" + state.date + ".json</code>, " +
+  /* ⚠️ Đường dẫn sửa tay phải GIỐNG HỆT ở ba nơi: HUONG_DAN_ADMIN.md §6 bước 4,
+     server/check-health.mjs (MANUAL_FIX_PATH) và chỗ này. Trước đây mỗi nơi ghi
+     một kiểu, mà bản ghi ở đây (public/…) còn không mở được từ trình duyệt. */
+  step("Cần gấp trong hôm nay: mở kho hở " +
+       "<a href=\"https://github.com/runduck113/doso-results\">doso-results</a> → " +
+       "sửa tay file <code>api/v1/results/" + state.date + ".json</code>, " +
        "thêm <code>\"manual\": true</code> vào bản ghi của đài đó để lượt cào sau KHÔNG đè lên. " +
-       "Đài nào sửa tay sẽ hiện nhãn “ĐÃ SỬA TAY” ở bảng trên.");
-  step("Xong thì chạy lại <code>node server/fetch-results.mjs</code> rồi tải lại trang này.");
+       "Đài nào sửa tay sẽ hiện nhãn “ĐÃ SỬA TAY” ở bảng trên. " +
+       "Xem HUONG_DAN_ADMIN.md §6 bước 4 — có ví dụ JSON đầy đủ.");
+  step("Sửa xong bấm <b>Commit changes</b>, đợi một phút rồi tải lại trang này.");
   sec.appendChild(ol);
 
   sec.appendChild(el("p", null,

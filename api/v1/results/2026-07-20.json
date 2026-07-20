@@ -1,6 +1,6 @@
 {
   "date": "2026-07-20",
-  "updatedAt": "2026-07-20T10:34:59.945Z",
+  "updatedAt": "2026-07-20T12:03:31.723Z",
   "results": {
     "mien-trung:hue": {
       "kind": "traditional",
@@ -238,6 +238,62 @@
         ],
         "dac-biet": [
           "008556"
+        ]
+      },
+      "source": "xosodaiphat.com + minhngoc.net.vn",
+      "sources": [
+        "xosodaiphat.com",
+        "minhngoc.net.vn"
+      ],
+      "confidence": "confirmed"
+    },
+    "mien-bac": {
+      "kind": "traditional",
+      "typeId": "mien-bac",
+      "date": "2026-07-20",
+      "draw": {
+        "dac-biet": [
+          "39128"
+        ],
+        "nhat": [
+          "66850"
+        ],
+        "nhi": [
+          "32789",
+          "07339"
+        ],
+        "ba": [
+          "08556",
+          "22983",
+          "80160",
+          "37394",
+          "88718",
+          "60939"
+        ],
+        "tu": [
+          "3337",
+          "6114",
+          "4588",
+          "7189"
+        ],
+        "nam": [
+          "9574",
+          "8427",
+          "7683",
+          "7174",
+          "3867",
+          "0477"
+        ],
+        "sau": [
+          "170",
+          "436",
+          "972"
+        ],
+        "bay": [
+          "01",
+          "44",
+          "89",
+          "63"
         ]
       },
       "source": "xosodaiphat.com + minhngoc.net.vn",

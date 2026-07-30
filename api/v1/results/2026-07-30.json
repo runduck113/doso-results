@@ -1,6 +1,6 @@
 {
   "date": "2026-07-30",
-  "updatedAt": "2026-07-30T11:33:05.967Z",
+  "updatedAt": "2026-07-30T12:14:51.963Z",
   "results": {
     "mien-bac": {
       "kind": "traditional",
@@ -51,11 +51,12 @@
           "90"
         ]
       },
-      "source": "xosodaiphat.com",
+      "source": "xosodaiphat.com + minhngoc.net.vn",
       "sources": [
-        "xosodaiphat.com"
+        "xosodaiphat.com",
+        "minhngoc.net.vn"
       ],
-      "confidence": "single"
+      "confidence": "confirmed"
     },
     "mien-trung:binh-dinh": {
       "kind": "traditional",
@@ -374,6 +375,7 @@
     }
   },
   "pushedRegions": [
+    "mien-bac",
     "mien-nam",
     "mien-trung"
   ]

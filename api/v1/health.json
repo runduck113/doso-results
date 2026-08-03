@@ -1,8 +1,8 @@
 {
-  "checkedAt": "2026-08-02T15:38:25.891Z",
-  "date": "2026-08-02",
-  "expected": 8,
-  "got": 8,
+  "checkedAt": "2026-08-03T12:45:34.135Z",
+  "date": "2026-08-03",
+  "expected": 6,
+  "got": 6,
   "missing": [],
   "ok": true,
   "disagreements": []

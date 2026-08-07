@@ -1,6 +1,6 @@
 {
   "date": "2026-08-07",
-  "updatedAt": "2026-08-07T10:33:05.175Z",
+  "updatedAt": "2026-08-07T11:28:33.207Z",
   "results": {
     "mien-trung:gia-lai": {
       "kind": "traditional",
@@ -44,11 +44,12 @@
           "300142"
         ]
       },
-      "source": "xosodaiphat.com",
+      "source": "xosodaiphat.com + minhngoc.net.vn",
       "sources": [
-        "xosodaiphat.com"
+        "xosodaiphat.com",
+        "minhngoc.net.vn"
       ],
-      "confidence": "single"
+      "confidence": "confirmed"
     },
     "mien-trung:ninh-thuan": {
       "kind": "traditional",
@@ -92,11 +93,12 @@
           "598069"
         ]
       },
-      "source": "xosodaiphat.com",
+      "source": "xosodaiphat.com + minhngoc.net.vn",
       "sources": [
-        "xosodaiphat.com"
+        "xosodaiphat.com",
+        "minhngoc.net.vn"
       ],
-      "confidence": "single"
+      "confidence": "confirmed"
     },
     "mien-nam:binh-duong": {
       "kind": "traditional",
@@ -244,9 +246,30 @@
         "minhngoc.net.vn"
       ],
       "confidence": "confirmed"
+    },
+    "mega-645": {
+      "kind": "vietlott",
+      "typeId": "mega-645",
+      "date": "2026-08-07",
+      "draw": {
+        "numbers": [
+          2,
+          8,
+          19,
+          30,
+          36,
+          43
+        ]
+      },
+      "source": "xosodaiphat.com",
+      "sources": [
+        "xosodaiphat.com"
+      ],
+      "confidence": "single"
     }
   },
   "pushedRegions": [
-    "mien-nam"
+    "mien-nam",
+    "mien-trung"
   ]
 }

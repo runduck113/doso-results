@@ -1,0 +1,255 @@
+{
+  "date": "2026-08-12",
+  "updatedAt": "2026-08-12T10:42:24.776Z",
+  "results": {
+    "mien-trung:da-nang": {
+      "kind": "traditional",
+      "typeId": "mien-trung:da-nang",
+      "date": "2026-08-12",
+      "draw": {
+        "tam": [
+          "86"
+        ],
+        "bay": [
+          "200"
+        ],
+        "sau": [
+          "4452",
+          "6288",
+          "3635"
+        ],
+        "nam": [
+          "3898"
+        ],
+        "tu": [
+          "34082",
+          "79981",
+          "32233",
+          "82963",
+          "50046",
+          "90615",
+          "93099"
+        ],
+        "ba": [
+          "37076",
+          "31418"
+        ],
+        "nhi": [
+          "13663"
+        ],
+        "nhat": [
+          "57872"
+        ],
+        "dac-biet": [
+          "637456"
+        ]
+      },
+      "source": "xosodaiphat.com + minhngoc.net.vn",
+      "sources": [
+        "xosodaiphat.com",
+        "minhngoc.net.vn"
+      ],
+      "confidence": "confirmed"
+    },
+    "mien-trung:khanh-hoa": {
+      "kind": "traditional",
+      "typeId": "mien-trung:khanh-hoa",
+      "date": "2026-08-12",
+      "draw": {
+        "tam": [
+          "54"
+        ],
+        "bay": [
+          "094"
+        ],
+        "sau": [
+          "4929",
+          "8265",
+          "0425"
+        ],
+        "nam": [
+          "6931"
+        ],
+        "tu": [
+          "12335",
+          "71405",
+          "30931",
+          "35288",
+          "80849",
+          "84689",
+          "47702"
+        ],
+        "ba": [
+          "96102",
+          "75916"
+        ],
+        "nhi": [
+          "55076"
+        ],
+        "nhat": [
+          "48012"
+        ],
+        "dac-biet": [
+          "053232"
+        ]
+      },
+      "source": "xosodaiphat.com + minhngoc.net.vn",
+      "sources": [
+        "xosodaiphat.com",
+        "minhngoc.net.vn"
+      ],
+      "confidence": "confirmed"
+    },
+    "mien-nam:can-tho": {
+      "kind": "traditional",
+      "typeId": "mien-nam:can-tho",
+      "date": "2026-08-12",
+      "draw": {
+        "tam": [
+          "04"
+        ],
+        "bay": [
+          "087"
+        ],
+        "sau": [
+          "9002",
+          "5887",
+          "9527"
+        ],
+        "nam": [
+          "8322"
+        ],
+        "tu": [
+          "07153",
+          "46706",
+          "36905",
+          "66241",
+          "02211",
+          "20983",
+          "72973"
+        ],
+        "ba": [
+          "47006",
+          "09400"
+        ],
+        "nhi": [
+          "96913"
+        ],
+        "nhat": [
+          "82206"
+        ],
+        "dac-biet": [
+          "333284"
+        ]
+      },
+      "source": "xosodaiphat.com + minhngoc.net.vn",
+      "sources": [
+        "xosodaiphat.com",
+        "minhngoc.net.vn"
+      ],
+      "confidence": "confirmed"
+    },
+    "mien-nam:dong-nai": {
+      "kind": "traditional",
+      "typeId": "mien-nam:dong-nai",
+      "date": "2026-08-12",
+      "draw": {
+        "tam": [
+          "02"
+        ],
+        "bay": [
+          "748"
+        ],
+        "sau": [
+          "6837",
+          "5796",
+          "7928"
+        ],
+        "nam": [
+          "3105"
+        ],
+        "tu": [
+          "94230",
+          "16974",
+          "91493",
+          "14755",
+          "84306",
+          "91616",
+          "01140"
+        ],
+        "ba": [
+          "00217",
+          "14444"
+        ],
+        "nhi": [
+          "02122"
+        ],
+        "nhat": [
+          "74193"
+        ],
+        "dac-biet": [
+          "476040"
+        ]
+      },
+      "source": "xosodaiphat.com + minhngoc.net.vn",
+      "sources": [
+        "xosodaiphat.com",
+        "minhngoc.net.vn"
+      ],
+      "confidence": "confirmed"
+    },
+    "mien-nam:soc-trang": {
+      "kind": "traditional",
+      "typeId": "mien-nam:soc-trang",
+      "date": "2026-08-12",
+      "draw": {
+        "tam": [
+          "63"
+        ],
+        "bay": [
+          "206"
+        ],
+        "sau": [
+          "5624",
+          "4680",
+          "7125"
+        ],
+        "nam": [
+          "7408"
+        ],
+        "tu": [
+          "51327",
+          "35504",
+          "26361",
+          "08775",
+          "61554",
+          "78572",
+          "51134"
+        ],
+        "ba": [
+          "65138",
+          "91058"
+        ],
+        "nhi": [
+          "23971"
+        ],
+        "nhat": [
+          "79079"
+        ],
+        "dac-biet": [
+          "401259"
+        ]
+      },
+      "source": "xosodaiphat.com + minhngoc.net.vn",
+      "sources": [
+        "xosodaiphat.com",
+        "minhngoc.net.vn"
+      ],
+      "confidence": "confirmed"
+    }
+  },
+  "pushedRegions": [
+    "mien-nam",
+    "mien-trung"
+  ]
+}

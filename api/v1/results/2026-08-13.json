@@ -1,6 +1,6 @@
 {
   "date": "2026-08-13",
-  "updatedAt": "2026-08-13T10:44:11.020Z",
+  "updatedAt": "2026-08-13T11:26:11.688Z",
   "results": {
     "mien-trung:binh-dinh": {
       "kind": "traditional",
@@ -295,6 +295,27 @@
         "minhngoc.net.vn"
       ],
       "confidence": "confirmed"
+    },
+    "power-655": {
+      "kind": "vietlott",
+      "typeId": "power-655",
+      "date": "2026-08-13",
+      "draw": {
+        "numbers": [
+          5,
+          9,
+          27,
+          29,
+          45,
+          46
+        ],
+        "powerNumber": 42
+      },
+      "source": "xosodaiphat.com",
+      "sources": [
+        "xosodaiphat.com"
+      ],
+      "confidence": "single"
     }
   },
   "pushedRegions": [

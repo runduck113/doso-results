@@ -1,6 +1,6 @@
 {
   "date": "2026-08-14",
-  "updatedAt": "2026-08-14T11:24:23.410Z",
+  "updatedAt": "2026-08-14T12:25:59.523Z",
   "results": {
     "mien-trung:gia-lai": {
       "kind": "traditional",
@@ -266,9 +266,66 @@
         "xosodaiphat.com"
       ],
       "confidence": "single"
+    },
+    "mien-bac": {
+      "kind": "traditional",
+      "typeId": "mien-bac",
+      "date": "2026-08-14",
+      "draw": {
+        "dac-biet": [
+          "80018"
+        ],
+        "nhat": [
+          "29580"
+        ],
+        "nhi": [
+          "53595",
+          "57908"
+        ],
+        "ba": [
+          "41944",
+          "45738",
+          "71720",
+          "81217",
+          "65909",
+          "66106"
+        ],
+        "tu": [
+          "6940",
+          "4034",
+          "0405",
+          "1035"
+        ],
+        "nam": [
+          "4236",
+          "6562",
+          "7088",
+          "9520",
+          "1472",
+          "2629"
+        ],
+        "sau": [
+          "240",
+          "470",
+          "855"
+        ],
+        "bay": [
+          "43",
+          "54",
+          "69",
+          "64"
+        ]
+      },
+      "source": "xosodaiphat.com + minhngoc.net.vn",
+      "sources": [
+        "xosodaiphat.com",
+        "minhngoc.net.vn"
+      ],
+      "confidence": "confirmed"
     }
   },
   "pushedRegions": [
+    "mien-bac",
     "mien-nam",
     "mien-trung"
   ]

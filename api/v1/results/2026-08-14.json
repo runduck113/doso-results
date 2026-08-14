@@ -1,6 +1,6 @@
 {
   "date": "2026-08-14",
-  "updatedAt": "2026-08-14T10:39:52.541Z",
+  "updatedAt": "2026-08-14T11:24:23.410Z",
   "results": {
     "mien-trung:gia-lai": {
       "kind": "traditional",
@@ -246,6 +246,26 @@
         "minhngoc.net.vn"
       ],
       "confidence": "confirmed"
+    },
+    "mega-645": {
+      "kind": "vietlott",
+      "typeId": "mega-645",
+      "date": "2026-08-14",
+      "draw": {
+        "numbers": [
+          7,
+          9,
+          13,
+          31,
+          35,
+          44
+        ]
+      },
+      "source": "xosodaiphat.com",
+      "sources": [
+        "xosodaiphat.com"
+      ],
+      "confidence": "single"
     }
   },
   "pushedRegions": [

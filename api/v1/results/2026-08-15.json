@@ -1,6 +1,6 @@
 {
   "date": "2026-08-15",
-  "updatedAt": "2026-08-15T10:55:29.790Z",
+  "updatedAt": "2026-08-15T11:51:11.766Z",
   "results": {
     "mien-nam:binh-phuoc": {
       "kind": "traditional",
@@ -344,9 +344,87 @@
         "minhngoc.net.vn"
       ],
       "confidence": "confirmed"
+    },
+    "mien-bac": {
+      "kind": "traditional",
+      "typeId": "mien-bac",
+      "date": "2026-08-15",
+      "draw": {
+        "dac-biet": [
+          "80278"
+        ],
+        "nhat": [
+          "97028"
+        ],
+        "nhi": [
+          "57724",
+          "00834"
+        ],
+        "ba": [
+          "71946",
+          "84077",
+          "83718",
+          "45800",
+          "97287",
+          "77363"
+        ],
+        "tu": [
+          "6233",
+          "3434",
+          "5381",
+          "6127"
+        ],
+        "nam": [
+          "4027",
+          "2547",
+          "1283",
+          "5647",
+          "6635",
+          "0761"
+        ],
+        "sau": [
+          "790",
+          "558",
+          "928"
+        ],
+        "bay": [
+          "33",
+          "66",
+          "52",
+          "04"
+        ]
+      },
+      "source": "xosodaiphat.com + minhngoc.net.vn",
+      "sources": [
+        "xosodaiphat.com",
+        "minhngoc.net.vn"
+      ],
+      "confidence": "confirmed"
+    },
+    "power-655": {
+      "kind": "vietlott",
+      "typeId": "power-655",
+      "date": "2026-08-15",
+      "draw": {
+        "numbers": [
+          16,
+          20,
+          25,
+          27,
+          30,
+          50
+        ],
+        "powerNumber": 2
+      },
+      "source": "xosodaiphat.com",
+      "sources": [
+        "xosodaiphat.com"
+      ],
+      "confidence": "single"
     }
   },
   "pushedRegions": [
+    "mien-bac",
     "mien-nam",
     "mien-trung"
   ]

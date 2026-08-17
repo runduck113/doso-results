@@ -1,6 +1,6 @@
 {
   "date": "2026-08-17",
-  "updatedAt": "2026-08-17T10:15:28.859Z",
+  "updatedAt": "2026-08-17T11:00:41.676Z",
   "results": {
     "mien-nam:ca-mau": {
       "kind": "traditional",
@@ -148,9 +148,108 @@
         "minhngoc.net.vn"
       ],
       "confidence": "confirmed"
+    },
+    "mien-trung:hue": {
+      "kind": "traditional",
+      "typeId": "mien-trung:hue",
+      "date": "2026-08-17",
+      "draw": {
+        "tam": [
+          "64"
+        ],
+        "bay": [
+          "425"
+        ],
+        "sau": [
+          "5883",
+          "2802",
+          "0755"
+        ],
+        "nam": [
+          "2155"
+        ],
+        "tu": [
+          "16837",
+          "91128",
+          "81224",
+          "93012",
+          "14244",
+          "88548",
+          "67880"
+        ],
+        "ba": [
+          "08747",
+          "26307"
+        ],
+        "nhi": [
+          "92664"
+        ],
+        "nhat": [
+          "71504"
+        ],
+        "dac-biet": [
+          "829055"
+        ]
+      },
+      "source": "xosodaiphat.com + minhngoc.net.vn",
+      "sources": [
+        "xosodaiphat.com",
+        "minhngoc.net.vn"
+      ],
+      "confidence": "confirmed"
+    },
+    "mien-trung:phu-yen": {
+      "kind": "traditional",
+      "typeId": "mien-trung:phu-yen",
+      "date": "2026-08-17",
+      "draw": {
+        "tam": [
+          "51"
+        ],
+        "bay": [
+          "529"
+        ],
+        "sau": [
+          "3606",
+          "1566",
+          "7885"
+        ],
+        "nam": [
+          "2043"
+        ],
+        "tu": [
+          "59092",
+          "66876",
+          "72781",
+          "63605",
+          "36836",
+          "25241",
+          "74799"
+        ],
+        "ba": [
+          "56944",
+          "37659"
+        ],
+        "nhi": [
+          "79625"
+        ],
+        "nhat": [
+          "68967"
+        ],
+        "dac-biet": [
+          "683471"
+        ]
+      },
+      "source": "xosodaiphat.com + minhngoc.net.vn",
+      "sources": [
+        "xosodaiphat.com",
+        "minhngoc.net.vn"
+      ],
+      "confidence": "confirmed"
     }
   },
   "pushedRegions": [
-    "mien-nam"
+    "mien-nam",
+    "mien-trung"
   ]
 }

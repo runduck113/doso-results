@@ -1,12 +1,10 @@
 {
-  "checkedAt": "2026-08-17T10:15:29.052Z",
+  "checkedAt": "2026-08-17T11:00:41.885Z",
   "date": "2026-08-17",
   "expected": 6,
-  "got": 3,
+  "got": 5,
   "missing": [
-    "mien-bac",
-    "mien-trung:hue",
-    "mien-trung:phu-yen"
+    "mien-bac"
   ],
   "ok": false,
   "disagreements": []

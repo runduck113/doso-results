@@ -1,0 +1,156 @@
+{
+  "date": "2026-08-17",
+  "updatedAt": "2026-08-17T10:15:28.859Z",
+  "results": {
+    "mien-nam:ca-mau": {
+      "kind": "traditional",
+      "typeId": "mien-nam:ca-mau",
+      "date": "2026-08-17",
+      "draw": {
+        "tam": [
+          "25"
+        ],
+        "bay": [
+          "406"
+        ],
+        "sau": [
+          "7946",
+          "0004",
+          "0346"
+        ],
+        "nam": [
+          "7824"
+        ],
+        "tu": [
+          "84277",
+          "78255",
+          "70742",
+          "33979",
+          "75769",
+          "60727",
+          "76263"
+        ],
+        "ba": [
+          "17700",
+          "12254"
+        ],
+        "nhi": [
+          "25262"
+        ],
+        "nhat": [
+          "22244"
+        ],
+        "dac-biet": [
+          "228853"
+        ]
+      },
+      "source": "xosodaiphat.com + minhngoc.net.vn",
+      "sources": [
+        "xosodaiphat.com",
+        "minhngoc.net.vn"
+      ],
+      "confidence": "confirmed"
+    },
+    "mien-nam:dong-thap": {
+      "kind": "traditional",
+      "typeId": "mien-nam:dong-thap",
+      "date": "2026-08-17",
+      "draw": {
+        "tam": [
+          "71"
+        ],
+        "bay": [
+          "217"
+        ],
+        "sau": [
+          "8035",
+          "1607",
+          "4752"
+        ],
+        "nam": [
+          "2850"
+        ],
+        "tu": [
+          "35818",
+          "67504",
+          "55923",
+          "72122",
+          "67680",
+          "81286",
+          "96970"
+        ],
+        "ba": [
+          "18524",
+          "27163"
+        ],
+        "nhi": [
+          "24031"
+        ],
+        "nhat": [
+          "97285"
+        ],
+        "dac-biet": [
+          "553908"
+        ]
+      },
+      "source": "xosodaiphat.com + minhngoc.net.vn",
+      "sources": [
+        "xosodaiphat.com",
+        "minhngoc.net.vn"
+      ],
+      "confidence": "confirmed"
+    },
+    "mien-nam:tp-ho-chi-minh": {
+      "kind": "traditional",
+      "typeId": "mien-nam:tp-ho-chi-minh",
+      "date": "2026-08-17",
+      "draw": {
+        "tam": [
+          "54"
+        ],
+        "bay": [
+          "109"
+        ],
+        "sau": [
+          "2328",
+          "0872",
+          "2935"
+        ],
+        "nam": [
+          "6429"
+        ],
+        "tu": [
+          "59466",
+          "81376",
+          "52545",
+          "86745",
+          "79654",
+          "25295",
+          "52783"
+        ],
+        "ba": [
+          "08334",
+          "61189"
+        ],
+        "nhi": [
+          "35259"
+        ],
+        "nhat": [
+          "31185"
+        ],
+        "dac-biet": [
+          "706890"
+        ]
+      },
+      "source": "xosodaiphat.com + minhngoc.net.vn",
+      "sources": [
+        "xosodaiphat.com",
+        "minhngoc.net.vn"
+      ],
+      "confidence": "confirmed"
+    }
+  },
+  "pushedRegions": [
+    "mien-nam"
+  ]
+}

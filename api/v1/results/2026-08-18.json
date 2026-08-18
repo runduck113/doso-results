@@ -1,0 +1,156 @@
+{
+  "date": "2026-08-18",
+  "updatedAt": "2026-08-18T10:03:18.694Z",
+  "results": {
+    "mien-nam:bac-lieu": {
+      "kind": "traditional",
+      "typeId": "mien-nam:bac-lieu",
+      "date": "2026-08-18",
+      "draw": {
+        "tam": [
+          "02"
+        ],
+        "bay": [
+          "549"
+        ],
+        "sau": [
+          "6177",
+          "3241",
+          "4688"
+        ],
+        "nam": [
+          "0012"
+        ],
+        "tu": [
+          "12756",
+          "12698",
+          "44175",
+          "34215",
+          "76510",
+          "30534",
+          "26997"
+        ],
+        "ba": [
+          "05525",
+          "36560"
+        ],
+        "nhi": [
+          "71695"
+        ],
+        "nhat": [
+          "18657"
+        ],
+        "dac-biet": [
+          "373492"
+        ]
+      },
+      "source": "xosodaiphat.com + minhngoc.net.vn",
+      "sources": [
+        "xosodaiphat.com",
+        "minhngoc.net.vn"
+      ],
+      "confidence": "confirmed"
+    },
+    "mien-nam:ben-tre": {
+      "kind": "traditional",
+      "typeId": "mien-nam:ben-tre",
+      "date": "2026-08-18",
+      "draw": {
+        "tam": [
+          "82"
+        ],
+        "bay": [
+          "298"
+        ],
+        "sau": [
+          "1752",
+          "4825",
+          "6810"
+        ],
+        "nam": [
+          "3020"
+        ],
+        "tu": [
+          "81987",
+          "46740",
+          "93834",
+          "44276",
+          "52868",
+          "67967",
+          "83534"
+        ],
+        "ba": [
+          "95781",
+          "64263"
+        ],
+        "nhi": [
+          "54884"
+        ],
+        "nhat": [
+          "69907"
+        ],
+        "dac-biet": [
+          "599422"
+        ]
+      },
+      "source": "xosodaiphat.com + minhngoc.net.vn",
+      "sources": [
+        "xosodaiphat.com",
+        "minhngoc.net.vn"
+      ],
+      "confidence": "confirmed"
+    },
+    "mien-nam:vung-tau": {
+      "kind": "traditional",
+      "typeId": "mien-nam:vung-tau",
+      "date": "2026-08-18",
+      "draw": {
+        "tam": [
+          "13"
+        ],
+        "bay": [
+          "734"
+        ],
+        "sau": [
+          "5400",
+          "7085",
+          "9523"
+        ],
+        "nam": [
+          "7488"
+        ],
+        "tu": [
+          "77011",
+          "89457",
+          "32735",
+          "22842",
+          "22181",
+          "69018",
+          "21287"
+        ],
+        "ba": [
+          "91505",
+          "41300"
+        ],
+        "nhi": [
+          "39228"
+        ],
+        "nhat": [
+          "20156"
+        ],
+        "dac-biet": [
+          "406016"
+        ]
+      },
+      "source": "xosodaiphat.com + minhngoc.net.vn",
+      "sources": [
+        "xosodaiphat.com",
+        "minhngoc.net.vn"
+      ],
+      "confidence": "confirmed"
+    }
+  },
+  "pushedRegions": [
+    "mien-nam"
+  ]
+}

@@ -1,9 +1,14 @@
 {
-  "checkedAt": "2026-08-17T14:54:43.893Z",
-  "date": "2026-08-17",
-  "expected": 6,
-  "got": 6,
-  "missing": [],
-  "ok": true,
+  "checkedAt": "2026-08-18T10:03:18.962Z",
+  "date": "2026-08-18",
+  "expected": 7,
+  "got": 3,
+  "missing": [
+    "mien-bac",
+    "mien-trung:dak-lak",
+    "mien-trung:quang-nam",
+    "power-655"
+  ],
+  "ok": false,
   "disagreements": []
 }

@@ -1,12 +1,9 @@
 {
-  "checkedAt": "2026-08-19T10:59:43.100Z",
+  "checkedAt": "2026-08-19T11:55:27.549Z",
   "date": "2026-08-19",
   "expected": 7,
-  "got": 5,
-  "missing": [
-    "mien-bac",
-    "mega-645"
-  ],
-  "ok": false,
+  "got": 7,
+  "missing": [],
+  "ok": true,
   "disagreements": []
 }

@@ -1,12 +1,10 @@
 {
-  "checkedAt": "2026-08-19T10:03:44.477Z",
+  "checkedAt": "2026-08-19T10:59:43.100Z",
   "date": "2026-08-19",
   "expected": 7,
-  "got": 3,
+  "got": 5,
   "missing": [
     "mien-bac",
-    "mien-trung:da-nang",
-    "mien-trung:khanh-hoa",
     "mega-645"
   ],
   "ok": false,

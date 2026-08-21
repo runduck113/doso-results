@@ -1,0 +1,156 @@
+{
+  "date": "2026-08-21",
+  "updatedAt": "2026-08-21T10:05:47.412Z",
+  "results": {
+    "mien-nam:binh-duong": {
+      "kind": "traditional",
+      "typeId": "mien-nam:binh-duong",
+      "date": "2026-08-21",
+      "draw": {
+        "tam": [
+          "29"
+        ],
+        "bay": [
+          "382"
+        ],
+        "sau": [
+          "3135",
+          "3243",
+          "6006"
+        ],
+        "nam": [
+          "4980"
+        ],
+        "tu": [
+          "27168",
+          "52052",
+          "97476",
+          "86942",
+          "52070",
+          "34793",
+          "04159"
+        ],
+        "ba": [
+          "42082",
+          "04767"
+        ],
+        "nhi": [
+          "90141"
+        ],
+        "nhat": [
+          "98175"
+        ],
+        "dac-biet": [
+          "466130"
+        ]
+      },
+      "source": "xosodaiphat.com + minhngoc.net.vn",
+      "sources": [
+        "xosodaiphat.com",
+        "minhngoc.net.vn"
+      ],
+      "confidence": "confirmed"
+    },
+    "mien-nam:tra-vinh": {
+      "kind": "traditional",
+      "typeId": "mien-nam:tra-vinh",
+      "date": "2026-08-21",
+      "draw": {
+        "tam": [
+          "57"
+        ],
+        "bay": [
+          "158"
+        ],
+        "sau": [
+          "0897",
+          "5547",
+          "1916"
+        ],
+        "nam": [
+          "1759"
+        ],
+        "tu": [
+          "42239",
+          "24701",
+          "32997",
+          "41646",
+          "56478",
+          "92603",
+          "68546"
+        ],
+        "ba": [
+          "49252",
+          "63964"
+        ],
+        "nhi": [
+          "94660"
+        ],
+        "nhat": [
+          "67604"
+        ],
+        "dac-biet": [
+          "366282"
+        ]
+      },
+      "source": "xosodaiphat.com + minhngoc.net.vn",
+      "sources": [
+        "xosodaiphat.com",
+        "minhngoc.net.vn"
+      ],
+      "confidence": "confirmed"
+    },
+    "mien-nam:vinh-long": {
+      "kind": "traditional",
+      "typeId": "mien-nam:vinh-long",
+      "date": "2026-08-21",
+      "draw": {
+        "tam": [
+          "18"
+        ],
+        "bay": [
+          "290"
+        ],
+        "sau": [
+          "8640",
+          "0825",
+          "2694"
+        ],
+        "nam": [
+          "5108"
+        ],
+        "tu": [
+          "63637",
+          "03445",
+          "26161",
+          "31537",
+          "56802",
+          "66076",
+          "01459"
+        ],
+        "ba": [
+          "41723",
+          "02482"
+        ],
+        "nhi": [
+          "86788"
+        ],
+        "nhat": [
+          "87966"
+        ],
+        "dac-biet": [
+          "837758"
+        ]
+      },
+      "source": "xosodaiphat.com + minhngoc.net.vn",
+      "sources": [
+        "xosodaiphat.com",
+        "minhngoc.net.vn"
+      ],
+      "confidence": "confirmed"
+    }
+  },
+  "pushedRegions": [
+    "mien-nam"
+  ]
+}

@@ -1,16 +1,18 @@
 {
-  "checkedAt": "2026-08-27T23:52:51.633Z",
-  "date": "2026-08-28",
-  "expected": 7,
+  "checkedAt": "2026-08-28T20:59:58.062Z",
+  "date": "2026-08-29",
+  "expected": 9,
   "got": 0,
   "missing": [
     "mien-bac",
-    "mien-trung:gia-lai",
-    "mien-trung:ninh-thuan",
-    "mien-nam:binh-duong",
-    "mien-nam:tra-vinh",
-    "mien-nam:vinh-long",
-    "mega-645"
+    "mien-trung:da-nang",
+    "mien-trung:dak-nong",
+    "mien-trung:quang-ngai",
+    "mien-nam:binh-phuoc",
+    "mien-nam:hau-giang",
+    "mien-nam:long-an",
+    "mien-nam:tp-ho-chi-minh",
+    "power-655"
   ],
   "ok": false,
   "disagreements": []

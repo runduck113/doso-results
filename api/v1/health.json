@@ -1,18 +1,9 @@
 {
-  "checkedAt": "2026-09-02T17:59:57.670Z",
+  "checkedAt": "2026-09-03T13:53:04.837Z",
   "date": "2026-09-03",
   "expected": 8,
-  "got": 0,
-  "missing": [
-    "mien-bac",
-    "mien-trung:binh-dinh",
-    "mien-trung:quang-binh",
-    "mien-trung:quang-tri",
-    "mien-nam:an-giang",
-    "mien-nam:binh-thuan",
-    "mien-nam:tay-ninh",
-    "power-655"
-  ],
-  "ok": false,
+  "got": 8,
+  "missing": [],
+  "ok": true,
   "disagreements": []
 }

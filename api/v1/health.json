@@ -1,16 +1,9 @@
 {
-  "checkedAt": "2026-09-13T17:33:12.343Z",
+  "checkedAt": "2026-09-14T16:00:15.007Z",
   "date": "2026-09-14",
   "expected": 6,
-  "got": 0,
-  "missing": [
-    "mien-bac",
-    "mien-trung:hue",
-    "mien-trung:phu-yen",
-    "mien-nam:ca-mau",
-    "mien-nam:dong-thap",
-    "mien-nam:tp-ho-chi-minh"
-  ],
-  "ok": false,
+  "got": 6,
+  "missing": [],
+  "ok": true,
   "disagreements": []
 }

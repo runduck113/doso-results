@@ -1,9 +1,17 @@
 {
-  "checkedAt": "2026-09-17T15:39:32.457Z",
-  "date": "2026-09-17",
-  "expected": 8,
-  "got": 8,
-  "missing": [],
-  "ok": true,
+  "checkedAt": "2026-09-17T18:26:52.854Z",
+  "date": "2026-09-18",
+  "expected": 7,
+  "got": 0,
+  "missing": [
+    "mien-bac",
+    "mien-trung:gia-lai",
+    "mien-trung:ninh-thuan",
+    "mien-nam:binh-duong",
+    "mien-nam:tra-vinh",
+    "mien-nam:vinh-long",
+    "mega-645"
+  ],
+  "ok": false,
   "disagreements": []
 }

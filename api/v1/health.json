@@ -1,17 +1,9 @@
 {
-  "checkedAt": "2026-10-19T20:07:02.714Z",
+  "checkedAt": "2026-10-20T14:29:48.083Z",
   "date": "2026-10-20",
   "expected": 7,
-  "got": 0,
-  "missing": [
-    "mien-bac",
-    "mien-trung:dak-lak",
-    "mien-trung:quang-nam",
-    "mien-nam:bac-lieu",
-    "mien-nam:ben-tre",
-    "mien-nam:vung-tau",
-    "power-655"
-  ],
-  "ok": false,
+  "got": 7,
+  "missing": [],
+  "ok": true,
   "disagreements": []
 }

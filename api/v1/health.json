@@ -1,9 +1,16 @@
 {
-  "checkedAt": "2026-10-25T15:03:55.386Z",
-  "date": "2026-10-25",
-  "expected": 8,
-  "got": 8,
-  "missing": [],
-  "ok": true,
+  "checkedAt": "2026-10-25T17:46:20.283Z",
+  "date": "2026-10-26",
+  "expected": 6,
+  "got": 0,
+  "missing": [
+    "mien-bac",
+    "mien-trung:hue",
+    "mien-trung:phu-yen",
+    "mien-nam:ca-mau",
+    "mien-nam:dong-thap",
+    "mien-nam:tp-ho-chi-minh"
+  ],
+  "ok": false,
   "disagreements": []
 }

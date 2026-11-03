@@ -1,16 +1,16 @@
 {
-  "checkedAt": "2026-11-02T22:52:23.641Z",
-  "date": "2026-11-03",
+  "checkedAt": "2026-11-03T17:20:42.884Z",
+  "date": "2026-11-04",
   "expected": 7,
   "got": 0,
   "missing": [
     "mien-bac",
-    "mien-trung:dak-lak",
-    "mien-trung:quang-nam",
-    "mien-nam:bac-lieu",
-    "mien-nam:ben-tre",
-    "mien-nam:vung-tau",
-    "power-655"
+    "mien-trung:da-nang",
+    "mien-trung:khanh-hoa",
+    "mien-nam:can-tho",
+    "mien-nam:dong-nai",
+    "mien-nam:soc-trang",
+    "mega-645"
   ],
   "ok": false,
   "disagreements": []
